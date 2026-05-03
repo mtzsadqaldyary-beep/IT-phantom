@@ -3,56 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Hub - جامعة تعز</title>
+    <title>IT Phantom - Ultimate Hub</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --primary-burnt: #6e2c14;
+            --highlight-orange: #ff6f00;
+            --bg-dark: #120905;
+            --code-green: #00ff41;
+        }
+
         body {
-            background-color: #0f0f0f; /* أسود سينمائي */
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(18, 9, 5, 0.95), rgba(18, 9, 5, 0.95)), 
+                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="0" y="20" fill="%236e2c14" font-family="monospace" font-size="12" opacity="0.1">01101</text></svg>');
+            color: #f0f0f0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
-        .container {
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #333;
-            border-radius: 15px;
-            background: #1a1a1a;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+        /* القائمة السفلية */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%;
+            background: #1a0d08; border-top: 1px solid var(--primary-burnt);
+            display: flex; justify-content: space-around; padding: 10px 0;
+            z-index: 100;
         }
-        button {
-            background-color: #0088cc; /* لون تيليجرام الأزرق */
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
+
+        .nav-item {
+            color: #888; font-size: 12px; text-align: center; cursor: pointer;
         }
+
+        .nav-item.active { color: var(--highlight-orange); font-weight: bold; }
+
+        .content-section { display: none; padding: 20px; padding-bottom: 80px; }
+        .content-section.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card {
+            background: rgba(110, 44, 20, 0.1);
+            border: 1px solid var(--primary-burnt);
+            padding: 15px; border-radius: 10px; margin-bottom: 15px;
+        }
+
+        .btn-main {
+            background: var(--primary-burnt); color: white; border: none;
+            padding: 10px 20px; border-radius: 5px; width: 100%; cursor: pointer;
+        }
+
+        /* تنسيق قسم OCR */
+        #ocr-preview { width: 100%; border-radius: 5px; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>مرحباً بك في IT Phantom</h2>
-        <p>بوابتك الذكية لخدمات جامعة تعز</p>
-        <button onclick="showAlert()">اضغط هنا</button>
-    </div>
+    <section id="services" class="content-section active">
+        <h2 style="color: var(--highlight-orange);">🏛 الخدمات الطلابية</h2>
+        <div class="card">
+            <h3>الملازم الدراسية</h3>
+            <p>جميع ملازم المستوى الأول (IT) بجامعة تعز جاهزة للتحميل.</p>
+            <button class="btn-main" onclick="window.open('https://t.me/YourChannelLink')">فتح المكتبة</button>
+        </div>
+        <div class="card">
+            <h3>حاسبة المعدل GPA</h3>
+            <p>احسب معدلك الفصلي والتراكمي بدقة.</p>
+            <button class="btn-main">ابدأ الحساب</button>
+        </div>
+    </section>
+
+    <section id="challenges" class="content-section">
+        <h2 style="color: var(--highlight-orange);">💻 Neural Arena</h2>
+        <div class="card">
+            <p>> تـحـدي بـايـثـون</p>
+            <div style="background:#000; padding:10px; color:var(--code-green); direction:ltr; font-size:12px;">
+                print("IT" + "Phantom" * 2)
+            </div>
+            <button class="btn-main" style="margin-top:10px;" onclick="tg.showAlert('الإجابة هي ITPhantomPhantom')">عرض الحل</button>
+        </div>
+    </section>
+
+    <section id="ocr" class="content-section">
+        <h2 style="color: var(--highlight-orange);">📸 الماسح الضوئي</h2>
+        <div class="card">
+            <p>حول صور الملازم أو السبورة إلى نص قابل للنسخ فوراً.</p>
+            <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImage(event)">
+            <button class="btn-main" onclick="document.getElementById('imageInput').click()">اختر صورة</button>
+            <img id="ocr-preview" alt="Preview">
+            <p id="ocr-status" style="font-size:12px; margin-top:10px; color:var(--code-green);"></p>
+        </div>
+    </section>
+
+    <nav class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('services', this)">🏛 الخدمات</div>
+        <div class="nav-item" onclick="switchTab('challenges', this)">💻 التحديات</div>
+        <div class="nav-item" onclick="switchTab('ocr', this)">📸 OCR</div>
+    </nav>
 
     <script>
-        // تفعيل واجهة تيليجرام
         const tg = window.Telegram.WebApp;
-        tg.expand(); // جعل التطبيق يفتح بكامل الشاشة
+        tg.expand();
 
-        function showAlert() {
-            tg.showAlert("أهلاً بك يا مبرمج! هذا أول تطبيق مصغر لك.");
+        function switchTab(sectionId, element) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function handleImage(event) {
+            const preview = document.getElementById('ocr-preview');
+            const status = document.getElementById('ocr-status');
+            preview.src = URL.createObjectURL(event.target.files[0]);
+            preview.style.display = 'block';
+            status.innerHTML = "> جاري معالجة الصورة... (هذه ميزة تجريبية)";
+            
+            // ملاحظة تقنية: للتحويل الحقيقي تحتاج لربط API مثل Tesseract.js أو Google Vision
+            setTimeout(() => {
+                status.innerHTML = "> اكتمل المسح: 'مرحباً بك في قسم الـ IT جامعة تعز'";
+            }, 2000);
         }
     </script>
 </body>
 </html>
+
+
+
