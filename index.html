@@ -1,129 +1,147 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Phantom - Ultimate Hub</title>
+    <title>IT Phantom - The Neural Arena</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary-burnt: #6e2c14;
-            --highlight-orange: #ff6f00;
-            --bg-dark: #120905;
-            --code-green: #00ff41;
+            --burnt-brown: #8b3a1a; /* البني الحارق */
+            --dark-core: #050505;   /* الأسود العميق */
+            --accent-orange: #ff4500; /* وهج النار */
+            --matrix-dim: rgba(139, 58, 26, 0.2); /* رموز بنية خفيفة */
         }
 
         body {
-            background-color: var(--bg-dark);
-            background-image: linear-gradient(rgba(18, 9, 5, 0.95), rgba(18, 9, 5, 0.95)), 
-                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="0" y="20" fill="%236e2c14" font-family="monospace" font-size="12" opacity="0.1">01101</text></svg>');
-            color: #f0f0f0;
+            background-color: var(--dark-core);
+            /* الرموز التقنية في الخلفية */
+            background-image: 
+                linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.95)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="30" fill="%238b3a1a" font-family="monospace" font-size="8" opacity="0.4">101010</text><text x="50" y="70" fill="%238b3a1a" font-family="monospace" font-size="8" opacity="0.4">011001</text><text x="20" y="90" fill="%238b3a1a" font-family="monospace" font-size="8" opacity="0.4">110110</text></svg>');
+            color: #dcdcdc;
             font-family: 'Courier New', Courier, monospace;
             margin: 0; padding: 0;
-            display: flex; flex-direction: column; min-height: 100vh;
+            min-height: 100vh;
         }
 
-        /* القائمة السفلية */
-        .nav-bar {
-            position: fixed; bottom: 0; width: 100%;
-            background: #1a0d08; border-top: 1px solid var(--primary-burnt);
-            display: flex; justify-content: space-around; padding: 10px 0;
-            z-index: 100;
+        /* الهيدر الترحيبي */
+        .welcome-section {
+            background: linear-gradient(to bottom, #1a0a05, var(--dark-core));
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--burnt-brown);
+            text-align: center;
         }
 
-        .nav-item {
-            color: #888; font-size: 12px; text-align: center; cursor: pointer;
-        }
+        .welcome-section h2 { font-size: 14px; color: #777; margin: 0; letter-spacing: 2px; }
+        .welcome-section h1 { font-size: 26px; color: var(--burnt-brown); margin: 10px 0 0; text-shadow: 0 0 10px rgba(139, 58, 26, 0.5); }
 
-        .nav-item.active { color: var(--highlight-orange); font-weight: bold; }
+        .content-area { display: none; padding: 20px; padding-bottom: 100px; }
+        .content-area.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
-        .content-section { display: none; padding: 20px; padding-bottom: 80px; }
-        .content-section.active { display: block; animation: fadeIn 0.5s; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .card {
-            background: rgba(110, 44, 20, 0.1);
-            border: 1px solid var(--primary-burnt);
-            padding: 15px; border-radius: 10px; margin-bottom: 15px;
+            background: rgba(139, 58, 26, 0.05);
+            border: 1px solid rgba(139, 58, 26, 0.3);
+            border-radius: 12px;
+            padding: 20px; margin-bottom: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        .btn-main {
-            background: var(--primary-burnt); color: white; border: none;
-            padding: 10px 20px; border-radius: 5px; width: 100%; cursor: pointer;
+        .code-snippet {
+            background: #000; border: 1px solid #222;
+            padding: 15px; color: #00ff41; border-radius: 8px;
+            direction: ltr; text-align: left; font-size: 13px; margin: 15px 0;
         }
 
-        /* تنسيق قسم OCR */
-        #ocr-preview { width: 100%; border-radius: 5px; margin-top: 10px; display: none; }
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%;
+            background: #0a0a0a; border-top: 1px solid var(--burnt-brown);
+            display: flex; justify-content: space-around; padding: 15px 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        }
+
+        .nav-link { color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        .nav-link.active { color: var(--burnt-brown); font-weight: bold; text-shadow: 0 0 8px var(--burnt-brown); }
+
+        .action-btn {
+            background: var(--burnt-brown); color: white; border: none;
+            padding: 12px; border-radius: 5px; width: 100%; cursor: pointer;
+            font-weight: bold; transition: 0.3s;
+        }
+
+        .action-btn:active { transform: scale(0.98); background: var(--accent-orange); }
+
+        .options-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .opt-btn { background: #111; color: #ccc; border: 1px solid #333; padding: 10px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <section id="services" class="content-section active">
-        <h2 style="color: var(--highlight-orange);">🏛 الخدمات الطلابية</h2>
+    <div class="welcome-section">
+        <h2>مرحباً يا مـهـنـدس</h2>
+        <h1 id="user-greeting">مطور الفانتوم</h1>
+    </div>
+
+    <section id="tab-services" class="content-area active">
         <div class="card">
-            <h3>الملازم الدراسية</h3>
-            <p>جميع ملازم المستوى الأول (IT) بجامعة تعز جاهزة للتحميل.</p>
-            <button class="btn-main" onclick="window.open('https://t.me/YourChannelLink')">فتح المكتبة</button>
+            <h3 style="color: var(--burnt-brown);">🏛 بـوابـة الـجـامـعـة</h3>
+            <p>مكتبة الملازم والملخصات لطلاب IT - المستوى الأول.</p>
+            <button class="action-btn" onclick="tg.openLink('https://t.me/YourChannel')">الذهاب للمكتبة</button>
         </div>
         <div class="card">
-            <h3>حاسبة المعدل GPA</h3>
-            <p>احسب معدلك الفصلي والتراكمي بدقة.</p>
-            <button class="btn-main">ابدأ الحساب</button>
+            <h3>📊 حاسبة المعدل</h3>
+            <p>نظام ذكي لحساب GPA الفصلي.</p>
+            <button class="action-btn">ابدأ الحساب</button>
         </div>
     </section>
 
-    <section id="challenges" class="content-section">
-        <h2 style="color: var(--highlight-orange);">💻 Neural Arena</h2>
+    <section id="tab-challenges" class="content-area">
         <div class="card">
-            <p>> تـحـدي بـايـثـون</p>
-            <div style="background:#000; padding:10px; color:var(--code-green); direction:ltr; font-size:12px;">
-                print("IT" + "Phantom" * 2)
+            <h3 style="color: var(--burnt-brown);">💻 Neural Challenge</h3>
+            <p>> لغة البرمجة: Python</p>
+            <div class="code-snippet">
+                x = "IT"<br>
+                print(x * 2 + "Phantom")
             </div>
-            <button class="btn-main" style="margin-top:10px;" onclick="tg.showAlert('الإجابة هي ITPhantomPhantom')">عرض الحل</button>
+            <div class="options-box">
+                <button class="opt-btn" onclick="tg.showAlert('خطأ!')">IT2Phantom</button>
+                <button class="opt-btn" onclick="tg.showAlert('أحسنت!')">ITITPhantom</button>
+            </div>
         </div>
     </section>
 
-    <section id="ocr" class="content-section">
-        <h2 style="color: var(--highlight-orange);">📸 الماسح الضوئي</h2>
+    <section id="tab-ocr" class="content-area">
         <div class="card">
-            <p>حول صور الملازم أو السبورة إلى نص قابل للنسخ فوراً.</p>
-            <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImage(event)">
-            <button class="btn-main" onclick="document.getElementById('imageInput').click()">اختر صورة</button>
-            <img id="ocr-preview" alt="Preview">
-            <p id="ocr-status" style="font-size:12px; margin-top:10px; color:var(--code-green);"></p>
+            <h3 style="color: var(--burnt-brown);">📸 الـمـاسـح الـضـوئي</h3>
+            <p>حول صور السبورة والكتب إلى أكواد برمجية فوراً.</p>
+            <button class="action-btn">رفع صورة المعالجة</button>
         </div>
     </section>
 
     <nav class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('services', this)">🏛 الخدمات</div>
-        <div class="nav-item" onclick="switchTab('challenges', this)">💻 التحديات</div>
-        <div class="nav-item" onclick="switchTab('ocr', this)">📸 OCR</div>
+        <div class="nav-link active" onclick="switchTab('tab-services', this)">الخدمات</div>
+        <div class="nav-link" onclick="switchTab('tab-challenges', this)">التحديات</div>
+        <div class="nav-link" onclick="switchTab('tab-ocr', this)">الماسح</div>
     </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        function switchTab(sectionId, element) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            
-            document.getElementById(sectionId).classList.add('active');
-            element.classList.add('active');
+        // تفعيل الاسم الشخصي
+        const userData = tg.initDataUnsafe?.user;
+        if(userData) {
+            document.getElementById('user-greeting').innerText = userData.first_name || userData.username;
         }
 
-        function handleImage(event) {
-            const preview = document.getElementById('ocr-preview');
-            const status = document.getElementById('ocr-status');
-            preview.src = URL.createObjectURL(event.target.files[0]);
-            preview.style.display = 'block';
-            status.innerHTML = "> جاري معالجة الصورة... (هذه ميزة تجريبية)";
-            
-            // ملاحظة تقنية: للتحويل الحقيقي تحتاج لربط API مثل Tesseract.js أو Google Vision
-            setTimeout(() => {
-                status.innerHTML = "> اكتمل المسح: 'مرحباً بك في قسم الـ IT جامعة تعز'";
-            }, 2000);
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.content-area').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
         }
     </script>
 </body>
